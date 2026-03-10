@@ -8,3 +8,4 @@ build/
 packages/client/dist/
 packages/server/dist/
 packages/shared/dist/
+packages/shared/tsconfig.tsbuildinfo
