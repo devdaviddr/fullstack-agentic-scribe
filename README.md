@@ -114,6 +114,8 @@ The server automatically creates the `users` table on first startup — no migra
 | GET    | `/api/health` | Server & database connectivity     |
 | GET    | `/api/users`  | List all users (ordered by email)  |
 
+*All route handlers in `packages/server` use TypeScript generics (see `src/utils/routeTypes.ts`) so request parameters and response bodies are checked at compile time.*
+
 All `/api/*` routes are rate-limited to **100 requests per minute per IP**.
 
 ---
