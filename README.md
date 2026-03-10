@@ -136,6 +136,22 @@ All `/api/*` routes are rate-limited to **100 requests per minute per IP**.
 | `npm run dev`     | Start all services via Docker Compose       |
 | `npm run lint`    | ESLint across all packages                  |
 | `npm run format`  | Prettier write across all packages          |
+| `npm run test`    | Run Vitest for both client and server       |
+
+### Testing
+
+This repo uses **Vitest** for unit and integration tests on both sides of the
+monorepo. Sample specs are included under `packages/client/src/**/*.test.tsx`
+and `packages/server/{src/__tests__,tests}/`.
+
+- `npm run test:client` runs the UI suite (jsdom environment).
+- `npm run test:server` runs the API/unit tests (node environment).
+
+Client tests use `@testing-library/react` and a JSDOM environment. Server
+integration specs use `supertest` against the Express `app` export; database
+calls are stubbed with `vitest` spies.
+
+Refer to the earlier conversation notes for guidance on expanding coverage.
 
 Per-package scripts (run with `--workspace=packages/<name>`):
 
