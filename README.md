@@ -31,9 +31,18 @@ fullstack-agentic-scribe/
 │   │       ├── db/
 │   │       │   ├── pool.ts      # Shared pg.Pool instance
 │   │       │   └── init.ts      # Idempotent schema bootstrap
-│   │       ├── routes/
-│   │       │   ├── health.ts    # GET /api/health
-│   │       │   └── users.ts     # GET /api/users
+│   │       ├── routes/             # Express router definitions
+│   │       │   ├── health.ts    # GET /api/health (delegates to controller)
+│   │       │   └── users.ts     # GET /api/users (delegates to controller)
+│   │       ├── controllers/        # request handlers that orchestrate services
+│   │       │   ├── healthController.ts
+│   │       │   └── userController.ts
+│   │       ├── services/           # business logic layer
+│   │       │   ├── healthService.ts
+│   │       │   └── userService.ts
+│   │       ├── repositories/       # data-access layer (raw SQL)
+│   │       │   ├── healthRepository.ts
+│   │       │   └── userRepository.ts
 │   │       ├── middleware/
 │   │       │   └── errorHandler.ts
 │   │       └── index.ts         # App entry point
