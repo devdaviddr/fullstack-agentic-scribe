@@ -31,7 +31,7 @@ app.get('/api/health', async (_req, res) => {
     res.json(response);
   } catch {
     const response: HealthResponse = {
-      status: 'ok',
+      status: 'degraded',
       database: 'disconnected',
       timestamp: new Date().toISOString(),
     };
@@ -57,5 +57,14 @@ app.get('/api/users', async (_req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+// Graceful shutdown
+const shutdown = async () => {
+  await prisma.$disconnect();
+  process.exit(0);
+};
+
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
 
 export default app;
