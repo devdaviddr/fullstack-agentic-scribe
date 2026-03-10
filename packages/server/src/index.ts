@@ -1,66 +1,54 @@
 import express from 'express';
 import cors from 'cors';
-import { PrismaClient } from '@prisma/client';
-import type { HealthResponse, UsersResponse, ApiError } from '@shared/index';
+import rateLimit from 'express-rate-limit';
+import healthRouter from './routes/health';
+import usersRouter from './routes/users';
+import { errorHandler } from './middleware/errorHandler';
+import { initDatabase } from './db/init';
+import pool from './db/pool';
 
 const app = express();
-const prisma = new PrismaClient();
 const PORT = process.env.PORT || 5000;
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:3000';
 
 // Middleware
 app.use(express.json());
-app.use(
-  cors({
-    origin: CLIENT_ORIGIN,
-    credentials: true,
-  })
-);
+app.use(cors({ origin: CLIENT_ORIGIN, credentials: true }));
+
+// Rate limiting — 100 requests per minute per IP across all API routes
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use('/api', apiLimiter);
+
+// Routes
+app.use('/api/health', healthRouter);
+app.use('/api/users', usersRouter);
+
+// Global error handler
+app.use(errorHandler);
 
 /**
- * Health check endpoint - returns server and database status.
+ * Initialise the database schema, then start listening.
  */
-app.get('/api/health', async (_req, res) => {
-  try {
-    await prisma.$queryRaw`SELECT 1`;
-    const response: HealthResponse = {
-      status: 'ok',
-      database: 'connected',
-      timestamp: new Date().toISOString(),
-    };
-    res.json(response);
-  } catch {
-    const response: HealthResponse = {
-      status: 'degraded',
-      database: 'disconnected',
-      timestamp: new Date().toISOString(),
-    };
-    res.status(503).json(response);
-  }
-});
+async function start(): Promise<void> {
+  await initDatabase();
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
 
-/**
- * Get all users from the database.
- */
-app.get('/api/users', async (_req, res) => {
-  try {
-    const users = await prisma.user.findMany();
-    const response: UsersResponse = { users };
-    res.json(response);
-  } catch (err) {
-    console.error('Error fetching users:', err);
-    res.status(500).json({ error: 'Internal server error', message: 'Failed to fetch users' } satisfies ApiError);
-  }
-});
-
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+start().catch((err) => {
+  console.error('Failed to start server:', err);
+  process.exit(1);
 });
 
 // Graceful shutdown
 const shutdown = async () => {
-  await prisma.$disconnect();
+  await pool.end();
   process.exit(0);
 };
 
@@ -68,3 +56,4 @@ process.on('SIGTERM', shutdown);
 process.on('SIGINT', shutdown);
 
 export default app;
+
