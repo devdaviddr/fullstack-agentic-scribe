@@ -1,0 +1,23 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy root package files
+COPY package.json package-lock.json* ./
+COPY packages/shared/package.json ./packages/shared/
+COPY packages/client/package.json ./packages/client/
+COPY packages/server/package.json ./packages/server/
+
+# Install dependencies
+RUN npm install
+
+# Copy source files
+COPY packages/shared ./packages/shared
+COPY packages/server ./packages/server
+
+# Generate Prisma client
+RUN cd packages/server && npx prisma generate
+
+EXPOSE 5000
+
+CMD ["sh", "-c", "cd packages/server && npx prisma db push && npm run dev"]
