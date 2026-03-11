@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import type { User, HealthResponse } from '@shared/index';
 import HealthStatus from './components/HealthStatus';
 import UserList from './components/UserList';
-import LiveConsultationView from './views/LiveConsultationView';
-import ConsultationReviewView from './views/ConsultationReviewView';
+import LiveConsultationView from './features/liveConsultation';
+import ConsultationReviewView from './features/consultationReview';
 
 type AppView = 'dashboard' | 'live-consultation' | 'consultation-review';
 
