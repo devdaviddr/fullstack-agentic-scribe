@@ -137,7 +137,7 @@ All `/api/*` routes are rate-limited to **100 requests per minute per IP**.
 | `npm run lint`    | ESLint across all packages                  |
 | `npm run format`  | Prettier write across all packages          |
 | `npm run test`    | Run Vitest for both client and server       |
-
+| `npm run coverage` | Execute tests with coverage for each package |
 ### Testing
 
 This repo uses **Vitest** for unit and integration tests on both sides of the
@@ -146,6 +146,9 @@ and `packages/server/{src/__tests__,tests}/`.
 
 - `npm run test:client` runs the UI suite (jsdom environment).
 - `npm run test:server` runs the API/unit tests (node environment).
+
+Run `npm run coverage` to execute both suites and generate coverage reports
+under `coverage/client` and `coverage/server`.
 
 Client tests use `@testing-library/react` and a JSDOM environment. Server
 integration specs use `supertest` against the Express `app` export; database

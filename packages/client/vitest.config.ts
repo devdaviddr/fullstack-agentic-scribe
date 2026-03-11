@@ -19,5 +19,11 @@ export default defineConfig({
     include: [
       `${__dirname}/src/**/*.test.{ts,tsx}`,
     ],
+    coverage: {
+      reporter: ['text', 'lcov'],
+      reportsDirectory: path.resolve(__dirname, '../../coverage/client'),
+      all: true,
+      include: ['src/**/*.ts', 'src/**/*.tsx'],
+    },
   },
 });

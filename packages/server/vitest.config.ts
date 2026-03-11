@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitest/config';
+import path from 'path';
 
 export default defineConfig({
   test: {
@@ -8,5 +9,11 @@ export default defineConfig({
       `${__dirname}/src/**/*.test.ts`,
       `${__dirname}/tests/**/*.test.ts`,
     ],
+    coverage: {
+      reporter: ['text', 'lcov'],
+      reportsDirectory: path.resolve(__dirname, '../../coverage/server'),
+      all: true,
+      include: ['src/**/*.ts'],
+    },
   },
 });

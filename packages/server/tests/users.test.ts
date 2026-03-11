@@ -3,9 +3,13 @@ import app from '../src/index';
 import pool from '../src/db/pool';
 import { vi, describe, test, expect, beforeEach, afterEach } from 'vitest';
 
+// we will mock console.error inside beforeEach so restoreAllMocks doesn’t clear it
+
 let querySpy: ReturnType<typeof vi.spyOn>;
 
 beforeEach(() => {
+  vi.restoreAllMocks();
+  vi.spyOn(console, 'error').mockImplementation(() => {});
   querySpy = vi.spyOn(pool, 'query');
 });
 

@@ -3,6 +3,8 @@ import { getUsersHandler } from '../controllers/userController';
 import * as userService from '../services/userService';
 import { vi, describe, test, expect, beforeEach } from 'vitest';
 
+// nothing here; we'll mock console.error inside each hook
+
 describe('userController.getUsersHandler', () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
@@ -10,9 +12,11 @@ describe('userController.getUsersHandler', () => {
   const statusMock = vi.fn().mockReturnValue({ json: jsonMock });
 
   beforeEach(() => {
+    vi.restoreAllMocks();
+    // silence error logs for each test after mocks are reset
+    vi.spyOn(console, 'error').mockImplementation(() => {});
     req = {};
     res = { status: statusMock as any, json: jsonMock as any };
-    vi.restoreAllMocks();
   });
 
   test('returns users on success', async () => {

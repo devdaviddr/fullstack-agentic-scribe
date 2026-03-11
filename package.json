@@ -12,7 +12,8 @@
     "format": "prettier --write packages/*/src",
     "test:client": "vitest --config packages/client/vitest.config.ts",
     "test:server": "vitest --config packages/server/vitest.config.ts",
-    "test": "npm run test:client && npm run test:server"
+    "test": "npm run test:client && npm run test:server",
+    "coverage": "npm run test:client -- --coverage && npm run test:server -- --coverage"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
@@ -21,10 +22,13 @@
     "@types/supertest": "^7.2.0",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
+    "@vitest/coverage-v8": "^4.0.18",
+    "c8": "^11.0.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "jsdom": "^28.1.0",
+    "pg-mem": "^3.0.14",
     "prettier": "^3.2.0",
     "supertest": "^7.2.2",
     "ts-node": "^10.9.2",
