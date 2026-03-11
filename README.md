@@ -14,6 +14,14 @@ A production-ready fullstack monorepo that showcases React agents, built with a 
 | Shared    | TypeScript types / interfaces package           |
 | Tooling   | npm workspaces, ESLint, Prettier, Docker Compose|
 
+## Screenshots
+
+Below are a couple of developer screenshots illustrating the UI and API health:
+
+![App Screenshot](screens/screena.png)
+
+![Health Check Screenshot](screens/screenb.png)
+
 ---
 
 ## Project structure
@@ -91,6 +99,9 @@ The server automatically creates the `users` table on first startup — no migra
    ```bash
    npm install
    ```
+
+2. **Start PostgreSQL and services** as described below.
+
 
 2. **Set environment variables** (create a `.env` file in `packages/server/` or export in your shell):
 
