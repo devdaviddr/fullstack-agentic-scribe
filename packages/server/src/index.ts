@@ -41,10 +41,14 @@ async function start(): Promise<void> {
   });
 }
 
-start().catch((err) => {
-  console.error('Failed to start server:', err);
-  process.exit(1);
-});
+// only start the server when executed directly; importing `app` in tests
+// should not spin up the HTTP listener (and avoids needing a real database).
+if (require.main === module) {
+  start().catch((err) => {
+    console.error('Failed to start server:', err);
+    process.exit(1);
+  });
+}
 
 // Graceful shutdown
 const shutdown = async () => {

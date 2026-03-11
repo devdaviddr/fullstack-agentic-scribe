@@ -1,30 +1,14 @@
 import { Router } from 'express';
-import pool from '../db/pool';
 import type { HealthResponse } from '@shared/index';
+import { healthHandler } from '../controllers/healthController';
 
 const router = Router();
 
 /**
  * GET /api/health
  * Returns server and database connectivity status.
+ * The actual logic lives in `controllers/healthController.ts`.
  */
-router.get('/', async (_req, res) => {
-  try {
-    await pool.query('SELECT 1');
-    const response: HealthResponse = {
-      status: 'ok',
-      database: 'connected',
-      timestamp: new Date().toISOString(),
-    };
-    res.json(response);
-  } catch {
-    const response: HealthResponse = {
-      status: 'degraded',
-      database: 'disconnected',
-      timestamp: new Date().toISOString(),
-    };
-    res.status(503).json(response);
-  }
-});
+router.get<{}, HealthResponse>('/', healthHandler);
 
 export default router;
