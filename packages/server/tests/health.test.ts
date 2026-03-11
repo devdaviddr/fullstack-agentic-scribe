@@ -3,8 +3,9 @@ import app from '../src/index';
 import pool from '../src/db/pool';
 import { vi, describe, test, expect, afterEach } from 'vitest';
 
-// stub the pool to avoid needing a real database
-vi.spyOn(pool, 'query').mockResolvedValue({ rows: [] } as any);
+// create a reusable spy for pool.query so we can control its behaviour per test
+const querySpy = vi.spyOn(pool, 'query');
+querySpy.mockResolvedValue({ rows: [] } as any);
 
 describe('GET /api/health', () => {
   test('responds with ok when database reachable', async () => {
@@ -14,7 +15,7 @@ describe('GET /api/health', () => {
   });
 
   test('handles database failure gracefully', async () => {
-    (pool.query as any).mockRejectedValueOnce(new Error('db down'));
+    querySpy.mockRejectedValueOnce(new Error('db down'));
     const res = await request(app).get('/api/health');
     expect(res.status).toBe(503);
     expect(res.body.status).toBe('degraded');
