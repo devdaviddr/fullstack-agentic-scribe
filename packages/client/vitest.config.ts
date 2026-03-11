@@ -10,7 +10,14 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
-    setupFiles: './src/setupTests.ts',
-    include: ['src/**/*.test.{ts,tsx}'],
+    setupFiles: [
+      // absolute path avoids CWD confusion when running from repo root
+      path.resolve(__dirname, 'src/setupTests.ts'),
+    ],
+    // resolve patterns relative to this config file so tests are found
+    // regardless of the current working directory.
+    include: [
+      `${__dirname}/src/**/*.test.{ts,tsx}`,
+    ],
   },
 });
