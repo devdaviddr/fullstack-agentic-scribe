@@ -1,5 +1,9 @@
 import React from 'react';
 
 export default function Logo({ className = '' }: { className?: string }) {
-  return <img src="/logo192.png" alt="Logo" className={`h-12 w-auto ${className}`} />;
+  return (
+    <span className={`text-4xl font-bold text-blue-600 ${className}`}>
+      AI Scribe
+    </span>
+  );
 }
