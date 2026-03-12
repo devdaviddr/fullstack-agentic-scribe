@@ -3,6 +3,7 @@ import React from 'react';
 export type TextInputProps = {
   id: string;
   label: string;
+  hideLabel?: boolean;
   type?: string;
   placeholder?: string;
   value: string;
@@ -13,6 +14,7 @@ export type TextInputProps = {
 export default function TextInput({
   id,
   label,
+  hideLabel = false,
   type = 'text',
   placeholder,
   value,
@@ -21,7 +23,12 @@ export default function TextInput({
 }: TextInputProps) {
   return (
     <div className={`space-y-1 ${className}`}>
-      <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+      <label
+        htmlFor={id}
+        className={`block text-sm font-medium text-gray-700 ${
+          hideLabel ? 'sr-only' : ''
+        }`}
+      >
         {label}
       </label>
       <input
