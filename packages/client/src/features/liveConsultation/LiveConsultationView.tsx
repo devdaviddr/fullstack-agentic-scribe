@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type SOAPTab = 'SOAP' | 'Summary' | 'Orders';
 
@@ -56,6 +57,7 @@ const TRANSCRIPT_MESSAGES: TranscriptMessage[] = [
 ];
 
 export default function LiveConsultationView({ onBack }: Props): JSX.Element {
+  const navigate = useNavigate();
   const [activeSOAPTab, setActiveSOAPTab] = useState<SOAPTab>('SOAP');
   const [isPaused, setIsPaused] = useState(false);
   const [medHistoryOpen, setMedHistoryOpen] = useState(false);
@@ -436,7 +438,7 @@ export default function LiveConsultationView({ onBack }: Props): JSX.Element {
             </div>
           </div>
 
-          <div className="p-4 border-t border-gray-200 shrink-0">
+          <div className="p-4 border-t border-gray-200 shrink-0 space-y-2">
             <button className="w-full bg-gray-900 text-white rounded-lg py-3 text-sm font-medium hover:bg-gray-800 flex items-center justify-center gap-2">
               <svg
                 viewBox="0 0 24 24"
@@ -448,6 +450,12 @@ export default function LiveConsultationView({ onBack }: Props): JSX.Element {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
               Review &amp; Sign Note
+            </button>
+            <button
+              onClick={() => navigate('/consultation-review')}
+              className="w-full bg-green-600 text-white rounded-lg py-3 text-sm font-medium hover:bg-green-700 flex items-center justify-center gap-2"
+            >
+              Go to Review
             </button>
           </div>
         </aside>
