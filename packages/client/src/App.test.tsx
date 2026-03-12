@@ -34,4 +34,16 @@ describe('App data fetching', () => {
     const errors = screen.getAllByText(/network/i);
     expect(errors.length).toBeGreaterThanOrEqual(1);
   });
+
+  test('navigates to login route', async () => {
+    // push history so router starts on /login
+    window.history.pushState({}, '', '/login');
+    render(<App />);
+    // look for the login page heading text
+    await waitFor(() =>
+      expect(
+        screen.getByRole('heading', { name: /welcome back/i })
+      ).toBeInTheDocument()
+    );
+  });
 });
